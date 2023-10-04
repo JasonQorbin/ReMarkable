@@ -6,15 +6,15 @@ import rehypeFormat from 'rehype-format';
 import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
 import rehypePrism from 'rehype-prism-plus';
+import {reporter} from 'vfile-reporter';
 import fs from 'fs';
 
-async function parseMarkdown(err, markdownContent) {
-  if (err != null) {
-    console.log('Error occurred');
-    console.log(err);
-    return;
-  }
+var args = process.argv;
+var inputPath = args.length > 2 ? args[2] : "";
+var outputPath = args.length > 3 ? args[3] : "";
 
+function parseMarkdown(markdownContent) {
+  return new Promise(async function(resolve, reject) {
   console.log("parsing markdown");
   const parser = await unified()
     .use(remarkParse) //Parse Markdown
@@ -25,9 +25,34 @@ async function parseMarkdown(err, markdownContent) {
     .use(rehypeFormat) //Format whitespace in HTML
     .use(rehypeStringify)
     .process(markdownContent);
-    console.log(String(parser));
-    // console.error(reporter(parser));
+  console.log("Done parsing markdown");
+  resolve(String(parser));
+  });
 }
 
-var args = process.argv;
-var fileContents = fs.readFile(args[2], 'utf8', parseMarkdown);
+function printOutput(data) {
+      //console.log(htmlData); 
+      if (outputPath === "") {
+        console.log("Writing output to the screen");
+        console.log(data);
+      } else {
+        console.log("Writing the output to " + outputPath);
+        fs.writeFile(outputPath, data,{flag: 'w+'}, (err) => {
+          if (err)
+            console.log(err);
+          else {
+            console.log("File written successfully\n");
+          }
+        });
+      }
+}
+
+// MAIN SCRIPT
+
+if (inputPath === "" ) {
+  console.log ("Please provide a markdown file as the first argument.");
+} else {
+  fs.promises.readFile(args[2], 'utf8')
+    .then( parseMarkdown)
+    .then( printOutput);
+}
