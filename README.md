@@ -8,6 +8,7 @@ Essentially, reMark is for working with Markdown in the Unified framework and in
 Markdown input, while reHype is for working with HTML. After parsing the markdown we convert from the reMark format to the
 reHype format and then use reHype to do some processing and formatting before outputing the HTML.
 
+
 ## Installation
 
 This script is meant to be used with node.js and is dependent on the npm packages mentioned above.
@@ -17,13 +18,13 @@ These steps assume that you already have node.js and npm installed.
 **Step 1:** Clone the repo.
 
 ```console
-git clone ...
+git clone <your-build-directory>
 ```
 
 **Step 2:** Create a new npm project in the cloned folder.
 
 ```console
-cd ...
+cd <your-build-directory>
 npm init -y
 ```
 
@@ -42,7 +43,7 @@ npm init -y
      "test": "echo \"Error: no test specified\" && exit 1"
 ```
 
-**Step 4:** Install the require npm packages.
+**Step 4:** Install the required npm packages.
 
 ```console
 npm install unified remark-parse remark-rehype rehype-stringify rehype-format remark-gfm remark-raw rehype-prism-plus
