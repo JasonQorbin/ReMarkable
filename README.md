@@ -28,7 +28,7 @@ cd <your-build-directory>
 npm init -y
 ```
 
-**Step 5:** Change the project type to "module" by adding the "type" property to the package.json file:
+**Step 3:** Change the project type to "module" by adding the "type" property to the package.json file:
 
 ```
 --- a/package.json
