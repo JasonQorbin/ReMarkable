@@ -51,7 +51,10 @@ async function processFile(inputFile, outputFile) {
 }
 // MAIN SCRIPT
 
-function printErrorMessage() {
+function printErrorMessage(reason = "") {
+  if (reason !== "") {
+    console.log(reason);
+  }
   console.log ("Usage:");
   console.log("node transpile.js inputFile.md");
   console.log("node transpile.js inputFile.md outputFile.html");
@@ -59,11 +62,11 @@ function printErrorMessage() {
 }
 
 function isMdFile(input) {
-    return (input.substring(input.length  - 4, input.length) === ".md");
+    return (input.substring(input.length  - 3, input.length) === ".md");
 }
 
 function isHTMLFile(input) {
-    return (input.substring(input.length  - 6, input.length) === ".html");
+    return (input.substring(input.length  - 5, input.length) === ".html");
 }
 async function runScript() {
     if (args.length < 3) {
@@ -78,7 +81,7 @@ async function runScript() {
             if (!haveInputFile) {
                 inputFile = args[counter];
                 if (inputFile === "-o") {
-                    printErrorMessage();
+                    printErrorMessage("Expected an output file but found a -o flag");
                     return;
                 }
                 haveInputFile = true;
@@ -90,17 +93,19 @@ async function runScript() {
                         continue;
                     } else {
                         if (!isMdFile(inputFile)) {
-                            printErrorMessage();
+                            printErrorMessage(`The input file ${inputFile} doesn't appear to be a markdown file
+The extension is ${inputFile.substring(inputFile.length  - 3, inputFile.length)}
+`);
                             return;
                         }
-                        let outputFile = inputFile.substring(0, inputFile.length - 4) + ".html";
+                        let outputFile = inputFile.substring(0, inputFile.length - 3) + ".html";
                         await processFile(inputFile, outputFile);
                         inputFile = args[counter];
                     }
                 } else {
                     let outputFile = args[counter];
                     if (!isHTMLFile(outputFile)) {
-                        printErrorMessage();
+                        printErrorMessage(`The output file ${outputFile} doesn't app:ear to be a html file`);
                         return;
                     }
                     await processFile(inputFile, outputFile);
@@ -110,6 +115,11 @@ async function runScript() {
             }
             counter++;
         } while (counter < args.length);
+
+        if (haveInputFile) {
+            let outputFile = inputFile.substring(0, inputFile.length - 3) + ".html";
+            processFile(inputFile, outputFile);
+        }
     }
 }
 
