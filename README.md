@@ -46,7 +46,7 @@ npm init -y
 **Step 4:** Install the required npm packages.
 
 ```console
-npm install unified remark-parse remark-rehype rehype-stringify rehype-format remark-gfm remark-raw rehype-prism-plus
+npm install unified remark-parse remark-rehype rehype-stringify rehype-format remark-gfm rehype-raw rehype-prism-plus
 ```
 
 **Step 5:** Call the script and pass a markdown file as an argument:
